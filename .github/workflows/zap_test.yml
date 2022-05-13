@@ -2,7 +2,9 @@ name: ZAP-Test
 
 on:
   push: 
-    branches: [ master ]
+    branches:
+        - master
+        - main
 
 jobs: 
   build: 
