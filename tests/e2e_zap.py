@@ -6,25 +6,26 @@ from os import getcwd
 
 # Test Automation Part of the Script
 
+# Your target website 
 target_url = 'http://localhost:5050'
+
+# You configure a proxy so all your requests can go through zap so it can see all your requests and responses.
 proxies = {
     'http': 'http://127.0.0.1:8090',
     'https': 'http://127.0.0.1:8090',
 }
 
+# Login to your web application
 auth_dict = {'username': 'admin', 'password': 'admin123'}
-
 login = requests.post(target_url + '/login',
                       proxies=proxies, json=auth_dict, verify=False)
-
-
 if login.status_code == 200:  # if login is successful
     auth_token = login.headers['Authorization']
     auth_header = {"Authorization": auth_token}
 
-    # now lets run some operations
+    # Make some requests
+    
     # GET Customer by ID
-
     get_cust_id = requests.get(
         target_url + '/get/2', proxies=proxies, headers=auth_header, verify=False)
     if get_cust_id.status_code == 200:
@@ -32,6 +33,7 @@ if login.status_code == 200:  # if login is successful
         print(get_cust_id.json())
         print()
 
+    # POST a customer id in order to obtain it's full contact info
     post = {'id': 2}
     fetch_customer_post = requests.post(
         target_url + '/fetch/customer', json=post, proxies=proxies, headers=auth_header, verify=False)
@@ -40,6 +42,7 @@ if login.status_code == 200:  # if login is successful
         print(fetch_customer_post.json())
         print()
 
+    # Fetch information for dleon user.
     search = {'search': 'dleon'}
     search_customer_username = requests.post(
         target_url + '/search', json=search, proxies=proxies, headers=auth_header, verify=False)
@@ -51,9 +54,9 @@ if login.status_code == 200:  # if login is successful
 
 # ZAP Operations
 
-zap = ZAP(proxies={'http': 'http://localhost:8090',
-                   'https': 'http://localhost:8090'})
+zap = ZAP(proxies=proxies)
 
+# Configure ZAP active scanning 
 if 'Light' not in zap.ascan.scan_policy_names:
     print("Adding scan policies")
     zap.ascan.add_scan_policy(
