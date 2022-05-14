@@ -76,7 +76,7 @@ now = datetime.datetime.now().strftime("%m/%d/%Y")
 alert_severity = 't;t;t;t'  # High;Medium;Low;Info
 # CWEID;#WASCID;Description;Other Info;Solution;Reference;Request Header;Response Header;Request Body;Response Body
 alert_details = 't;t;t;t;t;t;f;f;f;f'
-source_info = 'Vulnerability Report for Flask_API;Abhay Bhargav;API Team;{};{};v1;v1;API Scan Report'.format(
+source_info = 'Vulnerability Report for Flask_API;{};{};v1;v1;API Scan Report'.format(
     now, now)
 path = getcwd() + "/zap-report.json"
 zap.exportreport.generate(path, "json", sourcedetails=source_info,
