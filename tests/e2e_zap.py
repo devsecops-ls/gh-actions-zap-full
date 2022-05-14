@@ -22,6 +22,35 @@ login = requests.post(target_url + '/login',
 if login.status_code == 200:  # if login is successful
     auth_token = login.headers['Authorization']
     auth_header = {"Authorization": auth_token}
+    
+    # Make some requests
+
+    # GET Customer by ID
+    get_cust_id = requests.get(
+        target_url + '/get/2', proxies=proxies, headers=auth_header, verify=False)
+    if get_cust_id.status_code == 200:
+        print("Get Customer by ID Response")
+        print(get_cust_id.json())
+        print()
+
+    # POST a customer id in order to obtain it's full contact info
+    post = {'id': 2}
+    fetch_customer_post = requests.post(
+        target_url + '/fetch/customer', json=post, proxies=proxies, headers=auth_header, verify=False)
+    if fetch_customer_post.status_code == 200:
+        print("Fetch Customer POST Response")
+        print(fetch_customer_post.json())
+        print()
+
+    # Fetch information for dleon user.
+    search = {'search': 'dleon'}
+    search_customer_username = requests.post(
+        target_url + '/search', json=search, proxies=proxies, headers=auth_header, verify=False)
+    if search_customer_username.status_code == 200:
+        print("Search Customer POST Response")
+        print(search_customer_username.json())
+        print()
+
 
 # ZAP Operations
 
